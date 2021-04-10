@@ -1,6 +1,13 @@
 // server.js
 // where your node app starts
 
+
+/**
+ * FreeCodeCamp Timestamp microservice project
+ * Receive a string parameter and return with unix and utc date format
+ */
+
+
 // init project
 var express = require('express');
 var app = express();
@@ -24,6 +31,36 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+
+
+app.get("/api/timestamp/:dateString?", (req, res) => {
+
+  const theDate = req.params.dateString;
+  let date;
+
+  if (!theDate) {
+    date = new Date();
+  } else {
+   if (isNaN(theDate)) {
+      date = new Date(theDate);
+    } else {
+     date = new Date(parseInt(theDate)); 
+    }
+  }
+  
+
+
+  if (!date.getTime()) {
+    res.send({
+      error: date.toString()
+    })
+  } else {
+    res.send({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    })
+  }
+})
 
 
 // listen for requests :)
